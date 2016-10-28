@@ -31,7 +31,7 @@ public class MapParser {
                     new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+                //System.out.println(line);
                 if(line.trim().length() == 0){
                     continue;
                 }
@@ -43,12 +43,14 @@ public class MapParser {
                     String[] splitStrings = line.trim().split(" ");
                     int x = Integer.valueOf(splitStrings[0]);
                     int y = Integer.valueOf(splitStrings[1]);
+                    //System.out.printf("New %c [%d, %d] \n", currentColor, x, y);
                     map[x][y] = currentColor;
                 }
             }
             // Always close files.
             bufferedReader.close();
         }
+
         catch(FileNotFoundException ex) {
             System.out.println(
                     "Unable to open file '" +

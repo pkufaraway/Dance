@@ -19,22 +19,23 @@ class GameController {
     private int portNumber;
     private int boardSize;
     private int numberOfStars;
+    private String role;
     private MapParser parser;
     private Socket gameSocket;
     private PrintWriter outputStream;
     private BufferedReader inputStream;
 
-    private Spoiler spolierAI;
+    private Spoiler spoilerAI;
     private Choreographer choreographerAI;
 
-    GameController(String filename, int portNumber, int boardSize, int numberOfStars) throws IOException {
+    GameController(String filename, int portNumber, int boardSize, int numberOfStars, String role) throws IOException {
         this.portNumber = portNumber;
         this.filename = filename;
         this.boardSize = boardSize;
         this.numberOfStars = numberOfStars;
+        this.role = role;
         parser = new MapParser(filename, boardSize);
         connectToSocket();
-        writeToSocket("WA\n");
         listenForMoves();
         endGame();
     }
@@ -51,20 +52,17 @@ class GameController {
     }
 
     private void listenForMoves() throws IOException {
-        String incomingString;
-        while (true) {
-            incomingString = inputStream.readLine();
-            //System.out.println(incomingString);
-
-            if(incomingString.trim().equals("^")){
-                System.out.println("We are the spoiler");
-                spolierAI = new Spoiler(parser.map, numberOfStars);
-                writeToSocket(spolierAI.getStars());
-            } else {
-                System.out.println("We are the choreographer");
-                choreographerAI = new Choreographer(parser.map);
-                writeToSocket(choreographerAI.getMoves());
-            }
+        if(role.equals("S")){
+            System.out.println("We are the spoiler");
+            spoilerAI = new Spoiler(parser.map, numberOfStars);
+            writeToSocket(spoilerAI.getStars());
+        } else {
+            System.out.println("We are the choreographer");
+            String incomingString = inputStream.readLine();
+            System.out.println(incomingString);
+            parser.addStars(incomingString);
+            choreographerAI = new Choreographer(parser.map);
+            writeToSocket(choreographerAI.getMoves());
         }
         //endGame();
     }

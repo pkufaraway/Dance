@@ -4,10 +4,24 @@ public class Spoiler {
     int numberOfStars;
     int size;
 
+    public void printMap(){
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++) {
+                if(map[i][j] == 0){
+                    System.out.printf("* ");
+                } else {
+                    System.out.printf("%c ", map[i][j]);
+                }
+            }
+            System.out.println();
+        }
+    }
     public Spoiler(char[][] map, int numberOfStars){
         this.numberOfStars = numberOfStars;
+        System.out.println(numberOfStars);
         this.map = map;
         size = map.length;
+        printMap();
     }
 
     public static double distance(int x1,int y1, int x2, int y2){
@@ -43,19 +57,27 @@ public class Spoiler {
      */
     public String getStars(){
         int n = map.length;
+        int number = numberOfStars;
         StringBuilder answer = new StringBuilder();
         for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
                 if(isValid(i, j)){
+                    //System.out.printf("Add new %d %d\n", i, j);
                     answer.append(i);
                     answer.append(' ');
                     answer.append(j);
                     answer.append(' ');
                     map[i][j] = 'S';
+                    number--;
+                    if(number == 0){
+                        answer.deleteCharAt(answer.length() - 1);
+                        answer.append('\n');
+                        System.out.println(answer);
+                        return answer.toString();
+                    }
                 }
             }
         }
-        answer.deleteCharAt(answer.length() - 1);
         return answer.toString();
     }
 
