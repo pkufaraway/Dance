@@ -8,7 +8,7 @@ public class Choreographer {
     }
 
     public String getMoves(){
-        return "";
+        return "\n";
     }
 
 }

@@ -9,10 +9,12 @@ public class MapParser {
     public char[][] map;
 
     public void addStars(String stars){
-        String[] starList = stars.split(" ");
-        for(int i = 0; i < starList.length; i+=2){
+        stars = stars.replace('#',' ');
+        String[] starList = stars.trim().split(" ");
+        for(int i = 0; i < starList.length - 1; i+=2){
             int x = Integer.valueOf(starList[i]);
-            int y = Integer.valueOf(starList[i]);
+            int y = Integer.valueOf(starList[i + 1]);
+            System.out.printf("Add star %d %d\n", x ,y);
             map[x][y] = 'S';
         }
     }

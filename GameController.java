@@ -57,14 +57,18 @@ class GameController {
             spoilerAI = new Spoiler(parser.map, numberOfStars);
             writeToSocket(spoilerAI.getStars());
         } else {
+            char[] incomingString = new char[1024];
+            inputStream.read(incomingString, 0, 1024);
             System.out.println("We are the choreographer");
-            String incomingString = inputStream.readLine();
+            if(incomingString[0] == '$'){
+                return;
+            }
             System.out.println(incomingString);
-            parser.addStars(incomingString);
+            parser.addStars(new String(incomingString));
             choreographerAI = new Choreographer(parser.map);
             writeToSocket(choreographerAI.getMoves());
         }
-        //endGame();
+        endGame();
     }
 
     private void writeToSocket(String moveToMake) {
