@@ -4,24 +4,12 @@ public class Spoiler {
     int numberOfStars;
     int size;
 
-    public void printMap(){
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++) {
-                if(map[i][j] == 0){
-                    System.out.printf("* ");
-                } else {
-                    System.out.printf("%c ", map[i][j]);
-                }
-            }
-            System.out.println();
-        }
-    }
     public Spoiler(char[][] map, int numberOfStars){
         this.numberOfStars = numberOfStars;
         System.out.println(numberOfStars);
         this.map = map;
         size = map.length;
-        printMap();
+        Helper.printMap(map);
     }
 
     public static double distance(int x1,int y1, int x2, int y2){
