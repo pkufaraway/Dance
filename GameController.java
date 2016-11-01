@@ -60,14 +60,20 @@ class GameController {
             while(true) {
                 char[] incomingString = new char[1024];
                 inputStream.read(incomingString, 0, 1024);
-                System.out.println("We are the choreographer");
+                //System.out.println("We are the choreographer");
                 if (incomingString[0] == '$') {
                     return;
                 }
-                System.out.println(incomingString);
-                parser.addStars(new String(incomingString));
-                choreographerAI = new Choreographer(parser.map);
-                writeToSocket(choreographerAI.getMoves());
+                //System.out.println("Received:" + String.valueOf(incomingString));
+                //System.out.println(incomingString.length);
+                if(String.valueOf(incomingString).trim().length() >= 2) {
+                    parser.addStars(new String(incomingString));
+                    Helper.printMap(parser.map);
+                    choreographerAI = new Choreographer(parser.map);
+                }
+                if(String.valueOf(incomingString).contains("#")) {
+                    writeToSocket(choreographerAI.getMoves());
+                }
             }
         }
         endGame();

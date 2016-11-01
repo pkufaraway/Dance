@@ -132,6 +132,6 @@ public class PathPlanner {
             }
             System.out.println();
         }
-        Helper.printMap(pathPlanner.map);
+        //Helper.printMap(pathPlanner.map);
     }
 }
