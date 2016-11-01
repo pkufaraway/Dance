@@ -23,8 +23,6 @@ public class Choreographer {
         boolean[][] duplicate = new boolean[size][size];
         for(Pair pair : baiscmoves){
             if((end[pair.red.x][pair.red.y])){
-                System.out.println("Duplicate");
-                System.out.println(pair.red);
                 duplicate[pair.red.x][pair.red.y] = true;
             }
             end[pair.red.x][pair.red.y] = true;
@@ -45,37 +43,51 @@ public class Choreographer {
             for(Pair pair : baiscmoves){
                 if(pair.red.equals(p)){
                     System.out.println("Duplicate");
-                    System.out.println(pair.red);
+                    System.out.println(pair);
                     currentLock.add(pair);
                 }
             }
             Pair center = null;
             for(Pair pair : currentLock){
-                if(pair.blue.equals(p)){
+                if(pair.blue.equals(p) && pair.red.equals(p)){
                     center = pair;
                     break;
                 }
             }
             Pair head = currentLock.get(0);
             if (center != null){
+                for(Pair pair : currentLock){
+                    if(pair != center){
+                        head = pair;
+                        break;
+                    }
+                }
+                System.out.println("Head" + head.toString());
+                System.out.println("Center" + center.toString());
                 for(int i = 0; i < paths.size(); i++){
                     if(paths.get(i).get(indices[i]).equals(center.red) && indices[i] == paths.get(i).size() - 1){
                         paths.get(i).get(indices[i]).x = head.blue.x;
                         paths.get(i).get(indices[i]).y = head.blue.y;
-                        paths.get(i).addLast(new Position(center.red.x, center.red.y));
+                        paths.get(i).addLast(new Position(head.red.x, head.red.y));
+                        System.out.println(paths.get(i).get(indices[i]));
+                        System.out.println(paths.get(i).get(indices[i]+1));
                         break;
                     }
                 }
-                center.red = head.blue;
+                System.out.println("Head" + head.toString());
+                center.red = new Position(head.blue.x, head.blue.y);
+                center.blue = new Position(head.red.x, head.red.y);
+                System.out.println("Center" + center.toString());
             }
-            for(Pair pair : baiscmoves){
-                if(pair != head){
+            for(Pair pair : currentLock){
+                if(pair != head && pair != center){
                     for(int i = 0; i < paths.size(); i++){
                         if(indices[i] > 0 && paths.get(i).get(indices[i]).equals(pair.red) && paths.get(i).get(indices[i] - 1).equals(pair.blue)){
                             indices[i]--;
                         }
                     }
-                    pair.red = pair.blue;
+                    pair.red.x = pair.blue.x;
+                    pair.red.y = pair.blue.y;
                 }
             }
         }
@@ -106,16 +118,18 @@ public class Choreographer {
         System.out.println("Moves");
         ArrayList<Pair> moves = moveGenerator();
         for (Pair pair : moves) {
-            builder.append(pair.blue.x);
-            builder.append(' ');
-            builder.append(pair.blue.y);
-            builder.append(' ');
-            builder.append(pair.red.x);
-            builder.append(' ');
-            builder.append(pair.red.y);
-            builder.append(' ');
+            if(!pair.red.equals(pair.blue)) {
+                builder.append(pair.blue.x);
+                builder.append(' ');
+                builder.append(pair.blue.y);
+                builder.append(' ');
+                builder.append(pair.red.x);
+                builder.append(' ');
+                builder.append(pair.red.y);
+                builder.append(' ');
+                System.out.println(pair.blue.toString() + pair.red.toString());
+            }
         }
-        System.out.println("Return" + builder.toString());
         builder.deleteCharAt(builder.length() - 1);
         builder.append('\n');
         return builder.toString();
