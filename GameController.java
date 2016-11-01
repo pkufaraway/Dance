@@ -15,9 +15,9 @@ import java.net.Socket;
  *
  */
 class GameController {
-    private String filename;
+    //private String filename;
     private int portNumber;
-    private int boardSize;
+    //private int boardSize;
     private int numberOfStars;
     private String role;
     private MapParser parser;
@@ -30,8 +30,8 @@ class GameController {
 
     GameController(String filename, int portNumber, int boardSize, int numberOfStars, String role) throws IOException {
         this.portNumber = portNumber;
-        this.filename = filename;
-        this.boardSize = boardSize;
+        //this.filename = filename;
+        //this.boardSize = boardSize;
         this.numberOfStars = numberOfStars;
         this.role = role;
         parser = new MapParser(filename, boardSize);
@@ -52,14 +52,23 @@ class GameController {
     }
 
     private void listenForMoves() throws IOException {
+      char[] incomingString;
         if(role.equals("S")){
-            System.out.println("We are the spoiler");
-            spoilerAI = new Spoiler(parser.map, numberOfStars);
-            writeToSocket(spoilerAI.getStars());
+          while (true) {
+            incomingString = new char[4096];
+            inputStream.read(incomingString, 0, 4096);
+            if (incomingString[0] == '^') {
+              System.out.println("We are the spoiler");
+              spoilerAI = new Spoiler(parser.map, numberOfStars);
+              writeToSocket(spoilerAI.getStars());
+            } else if (incomingString[0] =='$') {
+              break;
+            }
+          }
         } else {
             while(true) {
-                char[] incomingString = new char[1024];
-                inputStream.read(incomingString, 0, 1024);
+                incomingString = new char[4096];
+                inputStream.read(incomingString, 0, 4096);
                 //System.out.println("We are the choreographer");
                 if (incomingString[0] == '$') {
                     return;
@@ -76,7 +85,6 @@ class GameController {
                 }
             }
         }
-        endGame();
     }
 
     private void writeToSocket(String moveToMake) {
