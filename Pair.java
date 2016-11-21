@@ -1,15 +1,21 @@
 public class Pair {
-    Position blue;
-    Position red;
-    public Pair(Position blue, Position red){
-        this.blue = blue;
-        this.red = red;
+    Position start;
+    Position end;
+    char color = 0;
+    public Pair(Position start, Position end, char color){
+        this.start = start;
+        this.end = end;
+        this.color = color;
+    }
+    public Pair(Position start, Position end){
+        this.start = start;
+        this.end = end;
     }
     public int distance(){
-        return Math.abs(this.blue.x - this.red.x) + Math.abs(this.blue.y - this.red.y);
+        return Math.abs(this.start.x - this.end.x) + Math.abs(this.start.y - this.end.y);
     }
     @Override
     public String toString(){
-        return this.blue.toString() + " " + this.red.toString();
+        return this.start.toString() + " " + this.end.toString();
     }
 }

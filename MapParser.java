@@ -14,7 +14,7 @@ public class MapParser {
         for(int i = 0; i < starList.length - 1; i+=2){
             int x = Integer.valueOf(starList[i]);
             int y = Integer.valueOf(starList[i + 1]);
-            System.out.printf("Add star %d %d\n", x ,y);
+            //System.out.printf("Add star %d %d\n", x ,y);
             map[x][y] = 'S';
         }
     }
@@ -45,8 +45,11 @@ public class MapParser {
                     String[] splitStrings = line.trim().split(" ");
                     int x = Integer.valueOf(splitStrings[0]);
                     int y = Integer.valueOf(splitStrings[1]);
-                    //System.out.printf("New %c [%d, %d] \n", currentColor, x, y);
-                    map[x][y] = currentColor;
+                    if(map[x][y] == 0) {
+                        map[x][y] = currentColor;
+                    } else {
+                        map[x][y] = 0;
+                    }
                 }
             }
             // Always close files.

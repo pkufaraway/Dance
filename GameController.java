@@ -77,7 +77,6 @@ class GameController {
                 //System.out.println(incomingString.length);
                 if(String.valueOf(incomingString).trim().length() >= 2) {
                     parser.addStars(new String(incomingString));
-                    Helper.printMap(parser.map);
                     choreographerAI = new Choreographer(parser.map);
                 }
                 if(String.valueOf(incomingString).contains("#")) {

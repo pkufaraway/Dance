@@ -14,10 +14,10 @@ public class PairFinder {
             for(int j = 0; j < size; j++) {
                 if(map[i][j] == 'B'){
                     blues.add(new Position(i,j));
-                    //System.out.println(new Position(i,j).toString());
+                    //System.out.println("New B" + new Position(i,j));
                 } else if(map[i][j] == 'R'){
                     reds.add(new Position(i,j));
-                    //System.out.println(new Position(i,j).toString());
+                    //System.out.println("New R" + new Position(i,j));
                 }
             }
         }
@@ -26,6 +26,8 @@ public class PairFinder {
     public List<Pair> findPairs(int iterations){
         int maxDistance = Integer.MAX_VALUE;
         int minSum = Integer.MAX_VALUE;
+        System.out.println(reds.size());
+        System.out.println(blues.size());
         Set<Pair> pairs = new HashSet<>();
         Set<Pair> result = new HashSet<>();
 
@@ -58,10 +60,10 @@ public class PairFinder {
         for (Pair pairOne : pairs) {
             for (Pair pairTwo : pairs) {
                 if(pairOne != pairTwo){
-                    Position blueOne = pairOne.blue;
-                    Position blueTwo = pairTwo.blue;
-                    Position redOne = pairOne.red;
-                    Position redTwo = pairTwo.red;
+                    Position blueOne = pairOne.start;
+                    Position blueTwo = pairTwo.start;
+                    Position redOne = pairOne.end;
+                    Position redTwo = pairTwo.end;
                     int d1 = Position.distance(blueOne, redTwo) + Position.distance(blueTwo, redOne);
                     int d2 = Position.distance(blueOne, redOne) + Position.distance(blueTwo, redTwo);
                     if(d1 < d2 && Position.distance(blueOne, redTwo) <= maxDistance && Position.distance(blueTwo, redOne) <= maxDistance){
@@ -81,10 +83,10 @@ public class PairFinder {
             if(pairOne.distance() == maxDistance)
                 for (Pair pairTwo : pairs) {
                     if(pairOne != pairTwo){
-                        Position blueOne = pairOne.blue;
-                        Position blueTwo = pairTwo.blue;
-                        Position redOne = pairOne.red;
-                        Position redTwo = pairTwo.red;
+                        Position blueOne = pairOne.start;
+                        Position blueTwo = pairTwo.start;
+                        Position redOne = pairOne.end;
+                        Position redTwo = pairTwo.end;
                         int d1 = Position.distance(blueOne, redTwo);
                         int d2 = Position.distance(blueTwo, redOne);
                         //System.out.println(blueOne.toString() + redOne.toString() + blueTwo.toString() + redTwo.toString());
@@ -121,7 +123,7 @@ public class PairFinder {
         int maxDistance = 0;
         for(Position blue:blues) {
             int min = Integer.MAX_VALUE;
-            Position choice = blue;
+            Position choice = redsLeft.iterator().next();
             for (Position red : redsLeft) {
                 if (Position.distance(blue, red) < min) {
                     min = Position.distance(blue, red);
@@ -144,10 +146,10 @@ public class PairFinder {
             for (Map.Entry<Pair, Pair> entry : swap.entrySet()) {
                 Pair pairOne = entry.getKey();
                 Pair pairTwo = entry.getValue();
-                Position redOne = pairOne.red;
-                Position redTwo = pairTwo.red;
-                pairOne.red = redTwo;
-                pairTwo.red = redOne;
+                Position redOne = pairOne.end;
+                Position redTwo = pairTwo.end;
+                pairOne.end = redTwo;
+                pairTwo.end = redOne;
                 maxDistance = findMaxDistance(pairs);
             }
         }
@@ -161,10 +163,10 @@ public class PairFinder {
             for (Map.Entry<Pair, Pair>  entry : swap.entrySet()) {
                 Pair pairOne = entry.getKey();
                 Pair pairTwo = entry.getValue();
-                Position redOne = pairOne.red;
-                Position redTwo = pairTwo.red;
-                pairOne.red = redTwo;
-                pairTwo.red = redOne;
+                Position redOne = pairOne.end;
+                Position redTwo = pairTwo.end;
+                pairOne.end = redTwo;
+                pairTwo.end = redOne;
             }
         }
 

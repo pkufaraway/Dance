@@ -169,8 +169,8 @@ public class Spoiler {
           //route they're likely to take. This will just help us find the
           //next furthest pair.
           System.out.println("Placing pairs on top of each other");
-          furthestPair.blue.x = furthestPair.red.x;
-          furthestPair.blue.y = furthestPair.red.y;
+          furthestPair.start.x = furthestPair.end.x;
+          furthestPair.start.y = furthestPair.end.y;
         } else {
           heatMap[star.x][star.y] = 0;
           if (isValid(star.x, star.y)) {
